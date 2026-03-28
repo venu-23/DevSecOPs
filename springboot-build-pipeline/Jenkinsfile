@@ -1,9 +1,11 @@
 
 pipeline {
-  agent { label 'build' }
-   environment { 
-        registry = "adamtravis/democicd" 
-        registryCredential = 'dockerhub' 
+  agent { label 'buildnode' }
+   environment {
+    AWS_ACCOUNT_ID = "942909610557"
+    AWS_REGION = "ap-south-1"
+    ECR_REPO = "springboot-app"
+    IMAGE_TAG = "latest"
    }
 
   stages {
@@ -57,17 +59,36 @@ pipeline {
       }
     }
    
-   stage('Stage VI: Build Image') {
-      steps { 
-        echo "Build Docker Image"
-        script {
-               docker.withRegistry( '', registryCredential ) { 
-                 myImage = docker.build registry
-                 myImage.push()
+ stage('Build & Push to ECR') {
+    steps {
+        withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'aws-creds'
+        ]]) {
+            script {
+                def imageUri = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
+
+                dir('springboot-build-pipeline') {
+                    sh """
+                    echo "Login to ECR"
+                    aws ecr get-login-password --region ${AWS_REGION} | docker login \
+                    --username AWS \
+                    --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+
+                    echo "Build Docker image"
+                    docker build -t ${ECR_REPO}:${IMAGE_TAG} .
+
+                    echo "Tag image"
+                    docker tag ${ECR_REPO}:${IMAGE_TAG} ${imageUri}
+
+                    echo "Push image to ECR"
+                    docker push ${imageUri}
+                    """
                 }
+            }
         }
-      }
     }
+}
         
    stage('Stage VII: Scan Image ') {
       steps { 
