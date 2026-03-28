@@ -27,7 +27,9 @@ pipeline {
    stage('Stage II: Code Coverage ') {
       steps {
 	    echo "Running Code Coverage ..."
-        sh "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64; mvn clean verify"
+        dir('springboot-build-pipeline') {
+            sh "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64; mvn clean verify"
+        }
       }
     }
 
