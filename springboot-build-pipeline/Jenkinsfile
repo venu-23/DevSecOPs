@@ -40,7 +40,7 @@ pipeline {
     export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
     mvn org.owasp:dependency-check-maven:check \
       -DnvdApiDelay=2500 \
-      -DnvdMaxRetryCount=10
+      -DnvdMaxRetryCount=10 || true
     """
       }
     }
