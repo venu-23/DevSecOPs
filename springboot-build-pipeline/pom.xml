@@ -110,7 +110,7 @@
 	    <plugin>
     <groupId>org.owasp</groupId>
     <artifactId>dependency-check-maven</artifactId>
-    <version>8.4.0</version> <!-- upgrade -->
+    <version>12.1.0</version> <!-- upgrade -->
 
     <configuration>
         <nvdApiKey>YOUR_API_KEY_HERE</nvdApiKey>
