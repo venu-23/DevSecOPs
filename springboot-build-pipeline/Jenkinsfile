@@ -32,25 +32,22 @@ pipeline {
         }
       }
     }
-	  
-stage('Stage III: SCA') {
+	stage('Stage III: SCA') {
   steps { 
     echo "Running SCA..."
     withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
       sh """
       export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+      export PATH=\$JAVA_HOME/bin:\$PATH
       
       mvn clean install \
-        -DnvdApiKey=$NVD_API_KEY \
+        -DnvdApiKey=\$NVD_API_KEY \
         -DnvdApiDelay=3000 \
         -DnvdMaxRetryCount=10
       """
     }
   }
 }
-
- 
-
    stage('Stage IV: SAST') {
       steps { 
         echo "Running Static application security testing using SonarQube Scanner ..."
