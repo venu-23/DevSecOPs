@@ -32,7 +32,7 @@ pipeline {
         }
       }
     }
-	  sh 'echo "Key length: ${#NVD_API_KEY}"'
+	  
 stage('Stage III: SCA') {
   steps { 
     echo "Running SCA..."
