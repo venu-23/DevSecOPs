@@ -39,7 +39,11 @@ pipeline {
       sh """
       export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
       export PATH=\$JAVA_HOME/bin:\$PATH
-      
+	  echo "Java version:"
+      java -version
+      echo "Maven version:"
+      mvn -version
+      mvn clean install -DskipTests
       mvn clean install \
         -DnvdApiKey=\$NVD_API_KEY \
         -DnvdApiDelay=3000 \
