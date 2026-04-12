@@ -38,7 +38,7 @@ stage('Stage III: SCA') {
     echo "Running SCA..."
     withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
       sh """
-      export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+      export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
       
       mvn clean install \
         -DnvdApiKey=$NVD_API_KEY \
