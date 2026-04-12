@@ -33,7 +33,7 @@ pipeline {
       }
     }
 
-   stage('Stage III: SCA') {
+ stage('Stage III: SCA') {
   steps { 
     echo "Running SCA..."
     withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
@@ -43,7 +43,7 @@ pipeline {
       mvn org.owasp:dependency-check-maven:check \
         -DnvdApiKey=$NVD_API_KEY \
         -DnvdApiDelay=2000 \
-        -DnvdMaxRetryCount=10 || true
+        -DnvdMaxRetryCount=10
       """
     }
   }
