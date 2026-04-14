@@ -7,7 +7,7 @@ pipeline {
     ECR_REPO = "springboot-app"
     IMAGE_TAG = "${BUILD_NUMBER}"   // ✅ changed from latest
     IMAGE_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
-    JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"   // ✅ global fix
+    JAVA_HOME = "/usr/lib/jvm/java-21-openjdk-amd64"
     PATH = "${JAVA_HOME}/bin:${env.PATH}"
   }
 
